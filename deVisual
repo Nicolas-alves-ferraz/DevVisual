@@ -1,0 +1,240 @@
+API
+dotnet new sln --output MySolutiondotnet new sln --output MySolution
+cd .\MySolution\
+dotnet new web --name NomeDoProjeto
+dotnet sln add NomeDoProjeto
+code .
+dotnet run -project NomeDoProjeto
+Criar um http e pegar a url e criar um get
+
+criar uma pasta chamada models
+
+
+
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Design
+public class Produto
+{
+	public int Id { get; set; }
+	public string Nome { get; set; }
+	public decimal Preco { get; set; }
+}
+using Microsoft.EntityFrameworkCore;
+
+public class AppDbContext : DbContext
+{
+    public DbSet<Produto> Produtos { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=nomeDoSeuBanco.db");
+    }
+}
+
+dotnet ef migrations add InitialCreate
+dotnet tool install --global dotnet-ef
+dotnet ef database update
+dotnet ef migrations add NomeDaMigracaoParaAlteracao
+
+
+PROJECT
+dotnet new web -n MinimalApiProject
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapGet("/", () => "Hello, Minimal API!");
+
+app.Run();
+
+app.MapGet("/items", () => "Obter todos os itens");
+app.MapPost("/items", () => "Adicionar um novo item");
+// ... outros endpoints
+
+app.MapGet("/items/{id}", (int id) => $"Obter item com ID {id}");
+app.MapPost("/items", ([FromBody] TodoItem item) => $"Adicionar item: {item.Name}");
+
+
+REACT
+  npx create-react-app my-app --template typescript
+  cd my-app
+
+  import React from "react";
+//1 - Um componente SEMPRE deve começar com a primeira letra
+//maiúscula
+//2 - Todo componente DEVE ser uma função do JS
+//3 - Todo deve retornar apenas UM elemento HTML
+function App() {
+  return (
+    <div>
+      <h1>Projeto base em React com TypeScript</h1>
+    </div>
+  );
+}
+//4 - OBRIGATORIAMENTE o componente DEVE ser exportado
+export default App;
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+npx create-react-app tabela-produtos --template typescript
+cd tabela-produtos
+
+  export interface Produto {
+    id: number;
+    nome: string;
+    descricao: string;
+    preco: number;
+    quantidade: number;
+    criadoEm: Date;
+}
+
+import React, { useEffect, useState } from 'react';
+import { Produto } from '../interfaces/Produto';
+
+const ListaProdutos: React.FC = () => {
+    const [produtos, setProdutos] = useState<Produto[]>([]);
+
+    useEffect(() => {
+        fetch('<https://api.exemplo.com/produtos>') // Substitua pela URL da sua API
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na requisição: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setProdutos(data);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }, []);
+
+    return (
+        <div>
+            <h1>Lista de Produtos</h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Criado Em</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {produtos.map(produto => (
+                        <tr key={produto.id}>
+                            <td>{produto.id}</td>
+                            <td>{produto.nome}</td>
+                            <td>{produto.descricao}</td>
+                            <td>{produto.preco}</td>
+                            <td>{produto.quantidade}</td>
+                            <td>{new Date(produto.criadoEm).toLocaleDateString()}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+export default ListaProdutos;
+
+React - Navegação entre componentes
+  npm install react-router-dom
+  npm install @types/react-router-dom
+
+  React - Bibliotecas de Estilo para React com TypeScript
+  npm install styled-components @types/styled-components
+  import styled from 'styled-components';
+
+const Button = styled.button`
+  background: palevioletred;
+  color: white;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+`;
+
+const App: React.FC = () => {
+    return (
+        <div className="App">
+            <Button>Styled Button</Button>
+        </div>
+    );
+};
+
+export default App;
+
+npm install @mui/material @emotion/react @emotion/styled
+
+  npm install bootstrap
+  npm install -D tailwindcss
+npx tailwindcss init
+
+  /* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+import React from 'react';
+import './index.css';
+
+const App: React.FC = () => {
+    return (
+        <div className="App">
+            <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                Tailwind Button
+            </button>
+        </div>
+    );
+};
+
+export default App;
+
+npm install antd
+  import React from 'react';
+import { Button } from 'antd';
+
+const App: React.FC = () => {
+    return (
+        <div className="App">
+            <Button type="primary">Ant Design Button</Button>
+        </div>
+    );
+};
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
